@@ -1,3 +1,52 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "doctor-1",
+      "description": "Dr. Emily Carter",
+      "imageUrl": "https://picsum.photos/seed/doctor1/100/100",
+      "imageHint": "doctor professional"
+    },
+    {
+      "id": "doctor-2",
+      "description": "Dr. Ben Adams",
+      "imageUrl": "https://picsum.photos/seed/doctor2/100/100",
+      "imageHint": "doctor friendly"
+    },
+    {
+      "id": "doctor-3",
+      "description": "Dr. Sarah Chen",
+      "imageUrl": "https://picsum.photos/seed/doctor3/100/100",
+      "imageHint": "doctor smiling"
+    },
+    {
+      "id": "patient-1",
+      "description": "Maria Silva",
+      "imageUrl": "https://picsum.photos/seed/patient1/100/100",
+      "imageHint": "woman portrait"
+    },
+    {
+      "id": "patient-2",
+      "description": "João Pereira",
+      "imageUrl": "https://picsum.photos/seed/patient2/100/100",
+      "imageHint": "man portrait"
+    },
+    {
+      "id": "patient-3",
+      "description": "Ana Costa",
+      "imageUrl": "https://picsum.photos/seed/patient3/100/100",
+      "imageHint": "person smiling"
+    },
+    {
+      "id": "patient-4",
+      "description": "Carlos Martins",
+      "imageUrl": "https://picsum.photos/seed/patient4/100/100",
+      "imageHint": "man professional"
+    },
+    {
+      "id": "patient-5",
+      "description": "Beatriz Santos",
+      "imageUrl": "https://picsum.photos/seed/patient5/100/100",
+      "imageHint": "woman professional"
+    }
+  ]
 }
