@@ -1,39 +1,51 @@
 
-import { StatsCards } from "@/components/dashboard/stats-cards";
-import { UpcomingAppointments } from "@/components/dashboard/upcoming-appointments";
-import { AppointmentsCalendar } from "@/components/dashboard/appointments-calendar";
 import { Button } from "@/components/ui/button";
-import { CalendarPlus } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Logo } from "@/components/logo";
 import Link from "next/link";
 
-export default function DashboardPage() {
+export default function LoginPage() {
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Meu Dashboard</h1>
-          <p className="text-muted-foreground">
-            Sua visão geral de saúde.
-          </p>
-        </div>
-        <Button asChild>
-            <Link href="/schedule">
-                <CalendarPlus className="mr-2"/>
-                Agendar Consulta
-            </Link>
-        </Button>
-      </div>
-
-      <StatsCards />
-
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-        <div className="lg:col-span-2">
-          <UpcomingAppointments />
-        </div>
-        <div className="lg:col-span-1">
-          <AppointmentsCalendar />
-        </div>
-      </div>
+    <div className="flex items-center justify-center min-h-screen bg-background">
+      <Card className="mx-auto max-w-sm w-full">
+        <CardHeader className="space-y-4">
+          <div className="flex justify-center">
+            <Logo />
+          </div>
+          <CardTitle className="text-2xl text-center">Login</CardTitle>
+          <CardDescription className="text-center">
+            Digite seu email abaixo para fazer login em sua conta
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid gap-4">
+            <div className="grid gap-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                required
+                defaultValue="admin@agendasaude.com"
+              />
+            </div>
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="password">Senha</Label>
+                <Link href="#" className="ml-auto inline-block text-sm underline">
+                  Esqueceu sua senha?
+                </Link>
+              </div>
+              <Input id="password" type="password" required defaultValue="password" />
+            </div>
+            <Button type="submit" className="w-full" asChild>
+              <Link href="/dashboard">Login</Link>
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

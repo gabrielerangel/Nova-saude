@@ -34,23 +34,7 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased">
         <AppContextProvider>
-          <SidebarProvider>
-            <Sidebar>
-              <AppSidebar />
-            </Sidebar>
-            <SidebarInset>
-              <AppHeader />
-              <main className="p-4 md:p-6 flex-1">{children}</main>
-              <footer className="p-4 md:p-6 border-t">
-                <div className="flex items-center justify-center text-sm text-muted-foreground">
-                  <span>© {new Date().getFullYear()} AgendaSaúde.</span>
-                  <Link href="/accessibility" className="ml-4 underline">
-                    Acessibilidade
-                  </Link>
-                </div>
-              </footer>
-            </SidebarInset>
-          </SidebarProvider>
+          <main>{children}</main>
           <Toaster />
         </AppContextProvider>
       </body>

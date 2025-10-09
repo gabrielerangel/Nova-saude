@@ -20,7 +20,7 @@ import {
 } from "lucide-react";
 
 const menuItems = [
-  { href: "/", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/schedule", label: "Agendar", icon: CalendarPlus },
   { href: "/history", label: "Minhas Consultas", icon: History },
 ];
@@ -57,7 +57,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="Sair" asChild>
-              <Link href="/login">
+              <Link href="/">
                   <LogOut />
                   <span>Sair</span>
               </Link>
