@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -20,7 +21,9 @@ import { useToast } from "@/hooks/use-toast";
 const formSchema = z.object({
   name: z.string().min(2, "O nome deve ter pelo menos 2 caracteres."),
   birthDate: z.string().min(1, "Data de nascimento é obrigatória."),
-  cpf: z.string().min(14, "CPF deve ter 11 dígitos.").max(14),
+  cpf: z.string().refine((cpf) => /^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf), {
+    message: "CPF inválido. Use o formato 000.000.000-00.",
+  }),
   phone: z.string().min(10, "Telefone inválido."),
   email: z.string().email("Email inválido."),
 });
