@@ -1,5 +1,5 @@
 import type { Patient, Doctor, Appointment } from './types';
-import { format } from 'date-fns';
+import { format, addDays } from 'date-fns';
 
 export const initialPatients: Patient[] = [
   { id: 'p1', name: 'Maria Silva', birthDate: '1985-05-20', cpf: '111.222.333-44', phone: '(11) 98765-4321', email: 'maria.silva@example.com' },
@@ -11,17 +11,37 @@ export const initialDoctors: Doctor[] = [
   { id: 'd1', name: 'Dr. Carlos Andrade', specialty: 'Cardiologia', crm: '12345-SP', phone: '(11) 91111-2222', email: 'carlos.andrade@saude.com' },
   { id: 'd2', name: 'Dra. Beatriz Lima', specialty: 'Dermatologia', crm: '67890-RJ', phone: '(21) 93333-4444', email: 'beatriz.lima@saude.com' },
   { id: 'd3', name: 'Dr. Ricardo Souza', specialty: 'Ortopedia', crm: '54321-MG', phone: '(31) 98888-7777', email: 'ricardo.souza@saude.com' },
+  { id: 'd4', name: 'Dra. Fernanda Alves', specialty: 'Pediatria', crm: '11223-SP', phone: '(11) 92222-3333', email: 'fernanda.alves@saude.com' },
+  { id: 'd5', name: 'Dr. Lucas Martins', specialty: 'Neurologia', crm: '44556-RJ', phone: '(21) 94444-5555', email: 'lucas.martins@saude.com' },
+  { id: 'd6', name: 'Dra. Juliana Santos', specialty: 'Ginecologia', crm: '77889-SP', phone: '(11) 96666-7777', email: 'juliana.santos@saude.com' },
+  { id: 'd7', name: 'Dr. Roberto Dias', specialty: 'Psiquiatria', crm: '10101-MG', phone: '(31) 91010-1010', email: 'roberto.dias@saude.com' },
 ];
 
 const today = new Date();
-const tomorrow = new Date(today);
-tomorrow.setDate(tomorrow.getDate() + 1);
-const nextWeek = new Date(today);
-nextWeek.setDate(nextWeek.getDate() + 7);
+const tomorrow = addDays(today, 1);
+const nextWeek = addDays(today, 7);
+const dayAfterTomorrow = addDays(today, 2);
 
 export const initialAppointments: Appointment[] = [
   { id: 'a1', patientId: 'p1', doctorId: 'd1', date: format(today, 'yyyy-MM-dd'), time: '10:00', status: 'scheduled' },
   { id: 'a2', patientId: 'p2', doctorId: 'd2', date: format(tomorrow, 'yyyy-MM-dd'), time: '14:30', status: 'scheduled' },
   { id: 'a3', patientId: 'p3', doctorId: 'd1', date: format(nextWeek, 'yyyy-MM-dd'), time: '09:00', status: 'scheduled' },
   { id: 'a4', patientId: 'p1', doctorId: 'd3', date: '2024-06-10', time: '11:00', status: 'completed' },
+  // Appointments to make Dr. Carlos Andrade (d1) unavailable today
+  { id: 'a5', patientId: 'p2', doctorId: 'd1', date: format(today, 'yyyy-MM-dd'), time: '09:00', status: 'scheduled' },
+  { id: 'a6', patientId: 'p3', doctorId: 'd1', date: format(today, 'yyyy-MM-dd'), time: '09:30', status: 'scheduled' },
+  { id: 'a7', patientId: 'p2', doctorId: 'd1', date: format(today, 'yyyy-MM-dd'), time: '10:30', status: 'scheduled' },
+  { id: 'a8', patientId: 'p3', doctorId: 'd1', date: format(today, 'yyyy-MM-dd'), time: '11:00', status: 'scheduled' },
+  { id: 'a9', patientId: 'p1', doctorId: 'd1', date: format(today, 'yyyy-MM-dd'), time: '11:30', status: 'scheduled' },
+  { id: 'a10', patientId: 'p2', doctorId: 'd1', date: format(today, 'yyyy-MM-dd'), time: '14:00', status: 'scheduled' },
+  { id: 'a11', patientId: 'p3', doctorId: 'd1', date: format(today, 'yyyy-MM-dd'), time: '14:30', status: 'scheduled' },
+  { id: 'a12', patientId: 'p1', doctorId: 'd1', date: format(today, 'yyyy-MM-dd'), time: '15:00', status: 'scheduled' },
+  { id: 'a13', patientId: 'p2', doctorId: 'd1', date: format(today, 'yyyy-MM-dd'), time: '15:30', status: 'scheduled' },
+  { id: 'a14', patientId: 'p3', doctorId: 'd1', date: format(today, 'yyyy-MM-dd'), time: '16:00', status: 'scheduled' },
+  { id: 'a15', patientId: 'p1', doctorId: 'd1', date: format(today, 'yyyy-MM-dd'), time: '16:30', status: 'scheduled' },
+  
+  // A few appointments for other doctors
+  { id: 'a16', patientId: 'p1', doctorId: 'd4', date: format(tomorrow, 'yyyy-MM-dd'), time: '09:00', status: 'scheduled' },
+  { id: 'a17', patientId: 'p2', doctorId: 'd4', date: format(tomorrow, 'yyyy-MM-dd'), time: '09:30', status: 'scheduled' },
+  { id: 'a18', patientId: 'p3', doctorId: 'd5', date: format(dayAfterTomorrow, 'yyyy-MM-dd'), time: '14:00', status: 'scheduled' },
 ];
