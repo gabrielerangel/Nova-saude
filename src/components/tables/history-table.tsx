@@ -1,3 +1,4 @@
+
 "use client";
 
 import * as React from "react";
@@ -21,7 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Calendar, User, Stethoscope } from "lucide-react";
+import { MoreHorizontal, Calendar, Stethoscope, Search } from "lucide-react";
 import { useAppContext } from "@/contexts/app-context";
 import { Appointment } from "@/lib/types";
 import {
@@ -41,15 +42,18 @@ export function HistoryTable() {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
 
-  const data = React.useMemo(() => appointments.map(app => {
+  const patientId = patients[0]?.id; // Assume the first patient is the logged in user
+
+  const data = React.useMemo(() => appointments.filter(a => a.patientId === patientId).map(app => {
     const patient = patients.find(p => p.id === app.patientId);
     const doctor = doctors.find(d => d.id === app.doctorId);
     return {
       ...app,
       patientName: patient?.name || 'N/A',
       doctorName: doctor?.name || 'N/A',
+      specialty: doctor?.specialty || 'N/A',
     }
-  }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()), [appointments, patients, doctors]);
+  }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()), [appointments, patients, doctors, patientId]);
 
 
   const columns: ColumnDef<typeof data[0]>[] = [
@@ -68,22 +72,15 @@ export function HistoryTable() {
         header: "Hora"
     },
     {
-      accessorKey: "patientName",
-      header: "Paciente",
-       cell: ({ row }) => (
-        <div className="flex items-center gap-2">
-            <User className="h-4 w-4 text-muted-foreground"/>
-            <span>{row.original.patientName}</span>
-        </div>
-      ),
-    },
-    {
       accessorKey: "doctorName",
       header: "Médico",
       cell: ({ row }) => (
         <div className="flex items-center gap-2">
             <Stethoscope className="h-4 w-4 text-muted-foreground"/>
-            <span>{row.original.doctorName}</span>
+            <div>
+              <p>{row.original.doctorName}</p>
+              <p className="text-xs text-muted-foreground">{row.original.specialty}</p>
+            </div>
         </div>
       ),
     },
@@ -104,6 +101,7 @@ export function HistoryTable() {
       id: "actions",
       cell: ({ row }) => {
         const appointment = row.original;
+        
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -114,10 +112,16 @@ export function HistoryTable() {
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Mudar Status</DropdownMenuLabel>
-              <DropdownMenuItem onClick={() => updateAppointment({ ...appointment, status: 'completed' })}>
+              <DropdownMenuItem 
+                onClick={() => updateAppointment({ ...appointment, status: 'completed' })}
+                disabled={appointment.status === 'completed' || appointment.status === 'canceled'}
+              >
                 Marcar como Concluída
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => updateAppointment({ ...appointment, status: 'canceled' })}>
+              <DropdownMenuItem 
+                onClick={() => updateAppointment({ ...appointment, status: 'canceled' })}
+                disabled={appointment.status === 'completed' || appointment.status === 'canceled'}
+              >
                 Cancelar Consulta
               </DropdownMenuItem>
             </DropdownMenuContent>
@@ -145,14 +149,17 @@ export function HistoryTable() {
   return (
     <div className="w-full">
         <div className="flex items-center py-4">
-            <Input
-            placeholder="Filtrar por paciente..."
-            value={(table.getColumn("patientName")?.getFilterValue() as string) ?? ""}
-            onChange={(event) =>
-                table.getColumn("patientName")?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-            />
+            <div className="relative w-full max-w-sm">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                placeholder="Filtrar por médico ou especialidade..."
+                value={(table.getColumn("doctorName")?.getFilterValue() as string) ?? ""}
+                onChange={(event) =>
+                    table.getColumn("doctorName")?.setFilterValue(event.target.value)
+                }
+                className="pl-10"
+                />
+            </div>
         </div>
       <div className="rounded-md border bg-card">
         <Table>

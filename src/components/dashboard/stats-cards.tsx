@@ -1,32 +1,37 @@
+
 "use client";
 
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Users, Stethoscope, CalendarCheck } from "lucide-react";
+import { CalendarCheck, Check, Clock } from "lucide-react";
 import { useAppContext } from "@/contexts/app-context";
 import Link from "next/link";
 
 export function StatsCards() {
-  const { patients, doctors, appointments } = useAppContext();
-  
-  const scheduledAppointments = appointments.filter(a => a.status === 'scheduled').length;
+  const { appointments, patients } = useAppContext();
+  const patientId = patients[0]?.id; // Assume the first patient is the logged in user
+
+  const scheduledAppointments = appointments.filter(a => a.patientId === patientId && a.status === 'scheduled').length;
+  const completedAppointments = appointments.filter(a => a.patientId === patientId && a.status === 'completed').length;
+  const canceledAppointments = appointments.filter(a => a.patientId === patientId && a.status === 'canceled').length;
+
 
   const stats = [
-    {
-      title: "Total de Pacientes",
-      value: patients.length,
-      icon: Users,
-      href: "/patients",
-    },
-    {
-      title: "Total de Médicos",
-      value: doctors.length,
-      icon: Stethoscope,
-      href: "/doctors",
-    },
     {
       title: "Consultas Agendadas",
       value: scheduledAppointments,
       icon: CalendarCheck,
+      href: "/history",
+    },
+    {
+      title: "Consultas Concluídas",
+      value: completedAppointments,
+      icon: Check,
+      href: "/history",
+    },
+    {
+      title: "Consultas Canceladas",
+      value: canceledAppointments,
+      icon: Clock,
       href: "/history",
     },
   ];

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -32,9 +33,10 @@ import { ptBR } from "date-fns/locale";
 import { useAppContext } from "@/contexts/app-context";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
+import React from "react";
 
 const formSchema = z.object({
-  patientId: z.string({ required_error: "Selecione um paciente." }),
+  specialty: z.string({ required_error: "Selecione uma especialidade." }),
   doctorId: z.string({ required_error: "Selecione um médico." }),
   date: z.date({ required_error: "Selecione uma data." }),
   time: z.string({ required_error: "Selecione um horário." }),
@@ -56,6 +58,7 @@ export function AppointmentForm() {
 
   const watchDate = form.watch("date");
   const watchDoctorId = form.watch("doctorId");
+  const watchSpecialty = form.watch("specialty");
 
   const availableTimeSlots = timeSlots.filter(slot => {
     if (!watchDate || !watchDoctorId) return true;
@@ -64,10 +67,22 @@ export function AppointmentForm() {
         app.doctorId === watchDoctorId && app.date === dateStr && app.time === slot
     );
   });
+  
+  const specialties = React.useMemo(() => [...new Set(doctors.map(d => d.specialty))], [doctors]);
+  const filteredDoctors = React.useMemo(() => doctors.filter(d => d.specialty === watchSpecialty), [doctors, watchSpecialty]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    const patientId = patients[0]?.id;
+    if (!patientId) {
+        toast({ title: "Erro", description: "Nenhum paciente encontrado.", variant: "destructive" });
+        return;
+    }
+    
+    const {specialty, ...rest} = values;
+
     const formattedValues = {
-      ...values,
+      ...rest,
+      patientId,
       date: format(values.date, "yyyy-MM-dd"),
     };
 
@@ -84,20 +99,20 @@ export function AppointmentForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="patientId"
+          name="specialty"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Paciente</FormLabel>
+              <FormLabel>Especialidade</FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
                   <SelectTrigger>
-                    <SelectValue placeholder="Selecione o paciente" />
+                    <SelectValue placeholder="Selecione a especialidade" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {patients.map((p) => (
-                    <SelectItem key={p.id} value={p.id}>
-                      {p.name}
+                  {specialties.map((s) => (
+                    <SelectItem key={s} value={s}>
+                      {s}
                     </SelectItem>
                   ))}
                 </SelectContent>
@@ -112,16 +127,16 @@ export function AppointmentForm() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Médico</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} defaultValue={field.value} disabled={!watchSpecialty}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Selecione o médico" />
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {doctors.map((d) => (
+                  {filteredDoctors.map((d) => (
                     <SelectItem key={d.id} value={d.id}>
-                      {d.name} - {d.specialty}
+                      {d.name}
                     </SelectItem>
                   ))}
                 </SelectContent>

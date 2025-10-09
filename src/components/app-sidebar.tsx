@@ -14,8 +14,6 @@ import {
 import { Logo } from "@/components/logo";
 import {
   LayoutDashboard,
-  Users,
-  Stethoscope,
   CalendarPlus,
   History,
   LogOut,
@@ -23,10 +21,8 @@ import {
 
 const menuItems = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/patients", label: "Pacientes", icon: Users },
-  { href: "/doctors", label: "Médicos", icon: Stethoscope },
   { href: "/schedule", label: "Agendar", icon: CalendarPlus },
-  { href: "/history", label: "Histórico", icon: History },
+  { href: "/history", label: "Minhas Consultas", icon: History },
 ];
 
 export function AppSidebar() {
@@ -43,15 +39,16 @@ export function AppSidebar() {
         <SidebarMenu>
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.href}>
-              <Link href={item.href}>
-                <SidebarMenuButton
-                  isActive={pathname === item.href}
-                  tooltip={item.label}
-                >
-                    <item.icon />
-                    <span>{item.label}</span>
-                </SidebarMenuButton>
-              </Link>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname === item.href}
+                tooltip={item.label}
+              >
+                <Link href={item.href}>
+                  <item.icon />
+                  <span>{item.label}</span>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
@@ -59,12 +56,12 @@ export function AppSidebar() {
       <SidebarFooter className="p-2">
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link href="/login">
-                <SidebarMenuButton tooltip="Sair">
-                    <LogOut />
-                    <span>Sair</span>
-                </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton tooltip="Sair" asChild>
+              <Link href="/login">
+                  <LogOut />
+                  <span>Sair</span>
+              </Link>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
