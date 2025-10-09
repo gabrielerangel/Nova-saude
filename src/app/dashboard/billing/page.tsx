@@ -28,11 +28,14 @@ export default function BillingPage() {
   );
 
   const totalDebt = React.useMemo(() => 
-    completedAppointments.reduce((total, app) => total + app.price, 0),
+    completedAppointments.reduce((total, app) => total + (app.price || 0), 0),
     [completedAppointments]
   );
 
   const formatCurrency = (value: number) => {
+    if (typeof value !== 'number') {
+      return 'N/A';
+    }
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
 
