@@ -1,3 +1,4 @@
+
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import {
   DropdownMenu,
@@ -11,6 +12,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "./ui/button";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { LogOut, User } from "lucide-react";
+import Link from "next/link";
 
 export function AppHeader() {
   const userAvatar = PlaceHolderImages.find((img) => img.id === "doctor-1");
@@ -49,9 +51,11 @@ export function AppHeader() {
               <span>Perfil</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut className="mr-2 h-4 w-4" />
-              <span>Sair</span>
+            <DropdownMenuItem asChild>
+              <Link href="/login">
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Sair</span>
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

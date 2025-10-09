@@ -1,3 +1,4 @@
+
 import type { Metadata } from "next";
 import { AppContextProvider } from "@/contexts/app-context";
 import { Toaster } from "@/components/ui/toaster";
@@ -8,6 +9,7 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { AppHeader } from "@/components/app-header";
+import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -38,7 +40,15 @@ export default function RootLayout({
             </Sidebar>
             <SidebarInset>
               <AppHeader />
-              <main className="p-4 md:p-6">{children}</main>
+              <main className="p-4 md:p-6 flex-1">{children}</main>
+              <footer className="p-4 md:p-6 border-t">
+                <div className="flex items-center justify-center text-sm text-muted-foreground">
+                  <span>© {new Date().getFullYear()} AgendaSaúde.</span>
+                  <Link href="/accessibility" className="ml-4 underline">
+                    Acessibilidade
+                  </Link>
+                </div>
+              </footer>
             </SidebarInset>
           </SidebarProvider>
           <Toaster />
