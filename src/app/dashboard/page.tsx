@@ -17,7 +17,7 @@ export default function DashboardPage() {
           </p>
         </div>
         <Button asChild>
-            <Link href="/schedule">
+            <Link href="/dashboard/schedule">
                 <CalendarPlus className="mr-2"/>
                 Agendar Consulta
             </Link>

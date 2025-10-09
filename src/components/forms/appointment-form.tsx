@@ -91,7 +91,7 @@ export function AppointmentForm() {
       title: "Sucesso!",
       description: "Consulta agendada com sucesso.",
     });
-    router.push("/history");
+    router.push("/dashboard/history");
   }
 
   return (

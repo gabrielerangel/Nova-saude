@@ -21,8 +21,8 @@ import {
 
 const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { href: "/schedule", label: "Agendar", icon: CalendarPlus },
-  { href: "/history", label: "Minhas Consultas", icon: History },
+  { href: "/dashboard/schedule", label: "Agendar", icon: CalendarPlus },
+  { href: "/dashboard/history", label: "Minhas Consultas", icon: History },
 ];
 
 export function AppSidebar() {

@@ -20,19 +20,19 @@ export function StatsCards() {
       title: "Consultas Agendadas",
       value: scheduledAppointments,
       icon: CalendarCheck,
-      href: "/history",
+      href: "/dashboard/history",
     },
     {
       title: "Consultas Concluídas",
       value: completedAppointments,
       icon: Check,
-      href: "/history",
+      href: "/dashboard/history",
     },
     {
       title: "Consultas Canceladas",
       value: canceledAppointments,
       icon: Clock,
-      href: "/history",
+      href: "/dashboard/history",
     },
   ];
 
