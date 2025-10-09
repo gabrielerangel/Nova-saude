@@ -17,12 +17,14 @@ import {
   CalendarPlus,
   History,
   LogOut,
+  CreditCard,
 } from "lucide-react";
 
 const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/schedule", label: "Agendar", icon: CalendarPlus },
   { href: "/dashboard/history", label: "Minhas Consultas", icon: History },
+  { href: "/dashboard/billing", label: "Contas Médicas", icon: CreditCard },
 ];
 
 export function AppSidebar() {

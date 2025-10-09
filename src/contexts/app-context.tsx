@@ -14,7 +14,7 @@ interface AppContextType {
   addDoctor: (doctor: Omit<Doctor, 'id'>) => void;
   updateDoctor: (doctor: Doctor) => void;
   deleteDoctor: (doctorId: string) => void;
-  addAppointment: (appointment: Omit<Appointment, 'id' | 'status'>) => void;
+  addAppointment: (appointment: Omit<Appointment, 'id' | 'status' | 'price'>) => void;
   updateAppointment: (appointment: Appointment) => void;
   deleteAppointment: (appointmentId: string) => void;
   getPatientById: (id: string) => Patient | undefined;
@@ -96,8 +96,11 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     setDoctors(doctors.filter(d => d.id !== doctorId));
   };
 
-  const addAppointment = (appointment: Omit<Appointment, 'id' | 'status'>) => {
-    setAppointments([...appointments, { ...appointment, id: crypto.randomUUID(), status: 'scheduled' }]);
+  const addAppointment = (appointment: Omit<Appointment, 'id' | 'status' | 'price'>) => {
+    // Dummy price logic for now
+    const doctor = getDoctorById(appointment.doctorId);
+    const price = doctor?.specialty === 'Cardiologia' ? 250 : 200;
+    setAppointments([...appointments, { ...appointment, id: crypto.randomUUID(), status: 'scheduled', price }]);
   };
   const updateAppointment = (updatedAppointment: Appointment) => {
     setAppointments(appointments.map(a => a.id === updatedAppointment.id ? updatedAppointment : a));

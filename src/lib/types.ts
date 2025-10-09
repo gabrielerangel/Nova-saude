@@ -23,4 +23,5 @@ export interface Appointment {
   date: string;
   time: string;
   status: 'scheduled' | 'completed' | 'canceled';
+  price: number;
 }
