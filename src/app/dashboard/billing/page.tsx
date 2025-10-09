@@ -32,9 +32,9 @@ export default function BillingPage() {
     [completedAppointments]
   );
 
-  const formatCurrency = (value: number) => {
+  const formatCurrency = (value: number | undefined) => {
     if (typeof value !== 'number') {
-      return 'N/A';
+      return 'R$ 0,00';
     }
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };

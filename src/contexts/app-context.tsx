@@ -99,7 +99,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const addAppointment = (appointment: Omit<Appointment, 'id' | 'status' | 'price'>) => {
     // Dummy price logic for now
     const doctor = getDoctorById(appointment.doctorId);
-    const price = doctor?.specialty === 'Cardiologia' ? 250 : 200;
+    const price = doctor?.specialty === 'Cardiologia' ? 250 : doctor?.specialty === 'Dermatologia' ? 300 : 200;
     setAppointments([...appointments, { ...appointment, id: crypto.randomUUID(), status: 'scheduled', price }]);
   };
   const updateAppointment = (updatedAppointment: Appointment) => {
