@@ -17,9 +17,11 @@ import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Separator } from "@/components/ui/separator";
 import { CreditCard, QrCode } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+
 
 export default function BillingPage() {
-  const { appointments, patients, getDoctorById } = useAppContext();
+  const { appointments, patients, getDoctorById, isDataLoaded } = useAppContext();
   const patientId = patients[0]?.id; // Assume the first patient is the logged in user
 
   const completedAppointments = React.useMemo(() => 
@@ -38,6 +40,22 @@ export default function BillingPage() {
     }
     return value.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
   };
+  
+  if (!isDataLoaded) {
+    return (
+        <div className="flex flex-col gap-4">
+            <h1 className="text-3xl font-bold tracking-tight">Contas Médicas</h1>
+            <Card>
+                <CardHeader><Skeleton className="h-8 w-1/3" /></CardHeader>
+                <CardContent><Skeleton className="h-24 w-full" /></CardContent>
+            </Card>
+            <Card className="max-w-md ml-auto w-full">
+                <CardHeader><Skeleton className="h-8 w-1/2" /></CardHeader>
+                <CardContent className="space-y-4"><Skeleton className="h-20 w-full" /></CardContent>
+            </Card>
+        </div>
+    )
+  }
 
   return (
     <div className="flex flex-col gap-4">
