@@ -42,7 +42,7 @@ export default function BillingPage() {
         <h1 className="text-3xl font-bold tracking-tight">Contas Médicas</h1>
         <p className="text-muted-foreground">
           Veja e gerencie suas despesas médicas.
-        p>
+        </p>
       </div>
 
       <Card>
