@@ -14,7 +14,7 @@ interface AppContextType {
   addDoctor: (doctor: Omit<Doctor, 'id'>) => void;
   updateDoctor: (doctor: Doctor) => void;
   deleteDoctor: (doctorId: string) => void;
-  addAppointment: (appointment: Omit<Appointment, 'id' | 'status'>) => void;
+  addAppointment: (appointment: Omit<Appointment, 'id' | 'status' | 'price'>) => void;
   updateAppointment: (appointment: Appointment) => void;
   deleteAppointment: (appointmentId: string) => void;
   getPatientById: (id: string) => Patient | undefined;
@@ -25,30 +25,29 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const useLocalStorage = <T,>(key: string, initialValue: T): [T, React.Dispatch<React.SetStateAction<T>>, boolean] => {
-  const [storedValue, setStoredValue] = useState<T>(initialValue);
+  const [storedValue, setStoredValue] = useState<T>(() => initialValue);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   useEffect(() => {
-    // This effect runs only on the client, after the initial render.
     try {
       const item = window.localStorage.getItem(key);
       if (item) {
         setStoredValue(JSON.parse(item));
       } else {
-        window.localStorage.setItem(key, JSON.stringify(initialValue));
+         window.localStorage.setItem(key, JSON.stringify(initialValue));
+         setStoredValue(initialValue);
       }
     } catch (error) {
       console.error(error);
       setStoredValue(initialValue);
     } finally {
-      setIsDataLoaded(true);
+        setIsDataLoaded(true);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
 
   useEffect(() => {
-    // This effect updates localStorage whenever storedValue changes.
-    if (typeof window !== 'undefined' && isDataLoaded) {
+    if (isDataLoaded) {
       try {
         window.localStorage.setItem(key, JSON.stringify(storedValue));
       } catch (error) {
@@ -92,7 +91,16 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   const addAppointment = (appointment: Omit<Appointment, 'id' | 'status' | 'price'>) => {
     const doctor = getDoctorById(appointment.doctorId);
-    const price = doctor?.specialty === 'Cardiologia' ? 250 : doctor?.specialty === 'Dermatologia' ? 300 : 200;
+    const specialtyPrices: { [key: string]: number } = {
+        'Cardiologia': 550,
+        'Dermatologia': 600,
+        'Ortopedia': 450,
+        'Pediatria': 400,
+        'Neurologia': 700,
+        'Ginecologia': 500,
+        'Psiquiatria': 800,
+    }
+    const price = doctor ? specialtyPrices[doctor.specialty] || 400 : 400;
     setAppointments(prev => [...prev, { ...appointment, id: crypto.randomUUID(), status: 'scheduled', price }]);
   };
   const updateAppointment = (updatedAppointment: Appointment) => {
@@ -120,7 +128,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     isDataLoaded,
   };
 
-  return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
+  return <AppContext.Provider value={value}>{isDataLoaded ? children : null}</AppContext.Provider>;
 };
 
 export const useAppContext = () => {
