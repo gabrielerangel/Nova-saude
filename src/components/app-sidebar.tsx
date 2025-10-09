@@ -17,16 +17,12 @@ import {
   CalendarPlus,
   History,
   LogOut,
-  Users,
-  Stethoscope,
 } from "lucide-react";
 
 const menuItems = [
   { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/dashboard/schedule", label: "Agendar", icon: CalendarPlus },
   { href: "/dashboard/history", label: "Minhas Consultas", icon: History },
-  { href: "/dashboard/patients", label: "Pacientes", icon: Users },
-  { href: "/dashboard/doctors", label: "Médicos", icon: Stethoscope },
 ];
 
 export function AppSidebar() {
