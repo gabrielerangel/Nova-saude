@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
@@ -29,8 +30,10 @@ const useLocalStorage = <T,>(key: string, initialValue: T): [T, React.Dispatch<R
   const [isDataLoaded, setIsDataLoaded] = useState(false);
 
   useEffect(() => {
+    // This effect runs only on the client, after the initial render.
+    let item;
     try {
-      const item = window.localStorage.getItem(key);
+      item = window.localStorage.getItem(key);
       if (item) {
         setStoredValue(JSON.parse(item));
       } else {
@@ -41,7 +44,7 @@ const useLocalStorage = <T,>(key: string, initialValue: T): [T, React.Dispatch<R
       console.error(error);
       setStoredValue(initialValue);
     } finally {
-        setIsDataLoaded(true);
+      setIsDataLoaded(true);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [key]);
@@ -92,15 +95,15 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   const addAppointment = (appointment: Omit<Appointment, 'id' | 'status' | 'price'>) => {
     const doctor = getDoctorById(appointment.doctorId);
     const specialtyPrices: { [key: string]: number } = {
-        'Cardiologia': 550,
-        'Dermatologia': 600,
-        'Ortopedia': 450,
-        'Pediatria': 400,
-        'Neurologia': 700,
-        'Ginecologia': 500,
-        'Psiquiatria': 800,
+        'Cardiologia': 250,
+        'Dermatologia': 280,
+        'Ortopedia': 220,
+        'Pediatria': 200,
+        'Neurologia': 300,
+        'Ginecologia': 240,
+        'Psiquiatria': 180,
     }
-    const price = doctor ? specialtyPrices[doctor.specialty] || 400 : 400;
+    const price = doctor ? specialtyPrices[doctor.specialty] || 150 : 150;
     setAppointments(prev => [...prev, { ...appointment, id: crypto.randomUUID(), status: 'scheduled', price }]);
   };
   const updateAppointment = (updatedAppointment: Appointment) => {
@@ -128,6 +131,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     isDataLoaded,
   };
 
+  // Render children only when data is loaded on the client to avoid hydration mismatch
   return <AppContext.Provider value={value}>{isDataLoaded ? children : null}</AppContext.Provider>;
 };
 
