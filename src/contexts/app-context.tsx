@@ -93,24 +93,31 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const addAppointment = (appointment: Omit<Appointment, 'id' | 'status' | 'price' | 'rating'>) => {
-    const doctor = getDoctorById(appointment.doctorId);
-    const specialtyPrices: { [key: string]: number } = {
-        'Cardiologia': 250,
-        'Dermatologia': 280,
-        'Ortopedia': 220,
-        'Pediatria': 200,
-        'Neurologia': 300,
-        'Ginecologia': 240,
-        'Psiquiatria': 180,
-    }
-    const basePrice = doctor ? specialtyPrices[doctor.specialty] || 150 : 150;
-    const price = appointment.type === 'online' ? basePrice * 0.8 : basePrice; // 20% discount for online appointments
+    setAppointments(prev => [...prev, { ...appointment, id: crypto.randomUUID(), status: 'scheduled', price: 0 }]);
+  };
 
-    setAppointments(prev => [...prev, { ...appointment, id: crypto.randomUUID(), status: 'scheduled', price: Math.round(price) }]);
-  };
   const updateAppointment = (updatedAppointment: Appointment) => {
-    setAppointments(prev => prev.map(a => a.id === updatedAppointment.id ? updatedAppointment : a));
+    let finalAppointment = { ...updatedAppointment };
+
+    if (finalAppointment.status === 'completed' && finalAppointment.price === 0) {
+      const doctor = getDoctorById(finalAppointment.doctorId);
+      const specialtyPrices: { [key: string]: number } = {
+          'Cardiologia': 250,
+          'Dermatologia': 280,
+          'Ortopedia': 220,
+          'Pediatria': 200,
+          'Neurologia': 300,
+          'Ginecologia': 240,
+          'Psiquiatria': 180,
+      };
+      const basePrice = doctor ? specialtyPrices[doctor.specialty] || 150 : 150;
+      const price = finalAppointment.type === 'online' ? basePrice * 0.8 : basePrice; // 20% discount for online appointments
+      finalAppointment.price = Math.round(price);
+    }
+
+    setAppointments(prev => prev.map(a => a.id === finalAppointment.id ? finalAppointment : a));
   };
+  
   const deleteAppointment = (appointmentId: string) => {
     setAppointments(prev => prev.filter(a => a.id !== appointmentId));
   };
