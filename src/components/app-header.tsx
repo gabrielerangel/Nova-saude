@@ -13,6 +13,7 @@ import { Button } from "./ui/button";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { LogOut, User } from "lucide-react";
 import Link from "next/link";
+import { ThemeToggle } from "./theme-toggle";
 
 export function AppHeader() {
   const userAvatar = PlaceHolderImages.find((img) => img.id === "doctor-1");
@@ -20,7 +21,8 @@ export function AppHeader() {
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center justify-between gap-4 border-b bg-background px-4 md:px-6">
       <SidebarTrigger className="md:hidden" />
-      <div className="flex w-full items-center justify-end">
+      <div className="flex w-full items-center justify-end gap-4">
+        <ThemeToggle />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-10 w-10 rounded-full">
