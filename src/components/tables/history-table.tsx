@@ -22,7 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Calendar, Stethoscope, Search } from "lucide-react";
+import { MoreHorizontal, Calendar, Stethoscope, Search, Star } from "lucide-react";
 import { useAppContext } from "@/contexts/app-context";
 import { Appointment } from "@/lib/types";
 import {
@@ -36,11 +36,13 @@ import { Badge } from "@/components/ui/badge";
 import { format, parseISO } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Input } from "../ui/input";
+import { RatingDialog } from "../rating-dialog";
 
 export function HistoryTable() {
   const { appointments, patients, doctors, updateAppointment } = useAppContext();
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+  const [ratingAppointment, setRatingAppointment] = React.useState<Appointment | null>(null);
 
   const patientId = patients[0]?.id; // Assume the first patient is the logged in user
 
@@ -54,6 +56,20 @@ export function HistoryTable() {
       specialty: doctor?.specialty || 'N/A',
     }
   }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()), [appointments, patients, doctors, patientId]);
+
+  const handleMarkAsCompleted = (appointment: Appointment) => {
+    updateAppointment({ ...appointment, status: 'completed' });
+    if (!appointment.rating) {
+      setRatingAppointment(appointment);
+    }
+  };
+
+  const handleRatingSubmit = (rating: number) => {
+    if (ratingAppointment) {
+      updateAppointment({ ...ratingAppointment, rating });
+      setRatingAppointment(null);
+    }
+  };
 
 
   const columns: ColumnDef<typeof data[0]>[] = [
@@ -98,6 +114,25 @@ export function HistoryTable() {
       },
     },
     {
+      accessorKey: "rating",
+      header: "Avaliação",
+      cell: ({ row }) => {
+        const { rating } = row.original;
+        if (typeof rating !== 'number') return <span className="text-muted-foreground">-</span>;
+        
+        return (
+          <div className="flex items-center">
+            {Array.from({ length: 5 }, (_, i) => (
+              <Star
+                key={i}
+                className={`h-4 w-4 ${i < rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
+              />
+            ))}
+          </div>
+        );
+      },
+    },
+    {
       id: "actions",
       cell: ({ row }) => {
         const appointment = row.original;
@@ -113,7 +148,7 @@ export function HistoryTable() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Mudar Status</DropdownMenuLabel>
               <DropdownMenuItem 
-                onClick={() => updateAppointment({ ...appointment, status: 'completed' })}
+                onClick={() => handleMarkAsCompleted(appointment)}
                 disabled={appointment.status === 'completed' || appointment.status === 'canceled'}
               >
                 Marcar como Concluída
@@ -229,6 +264,13 @@ export function HistoryTable() {
           Próximo
         </Button>
       </div>
+       <RatingDialog
+        isOpen={!!ratingAppointment}
+        onClose={() => setRatingAppointment(null)}
+        onSubmit={handleRatingSubmit}
+        appointment={ratingAppointment}
+        doctor={doctors.find(d => d.id === ratingAppointment?.doctorId)}
+      />
     </div>
   );
 }
