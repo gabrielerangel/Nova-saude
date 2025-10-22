@@ -104,7 +104,7 @@ export function HistoryTable() {
       accessorKey: "type",
       header: "Tipo",
       cell: ({ row }) => {
-        const { type } = row.original;
+        const type = row.original.type || 'presencial';
         const Icon = type === 'online' ? Monitor : Building;
         const label = type.charAt(0).toUpperCase() + type.slice(1);
         return (

@@ -34,7 +34,8 @@ export function UpcomingAppointments() {
               
               if (!patient || !doctor) return null;
               
-              const TypeIcon = app.type === 'online' ? Monitor : Building;
+              const type = app.type || 'presencial';
+              const TypeIcon = type === 'online' ? Monitor : Building;
 
               return (
                 <div key={app.id} className="flex items-center justify-between space-x-4 p-2 rounded-lg hover:bg-muted/50">
@@ -53,7 +54,7 @@ export function UpcomingAppointments() {
                   </div>
                   <div className="text-right">
                     <div className="flex items-center gap-2 text-sm font-medium">
-                        <TypeIcon className="h-4 w-4 text-muted-foreground" title={`Consulta ${app.type}`} />
+                        <TypeIcon className="h-4 w-4 text-muted-foreground" title={`Consulta ${type}`} />
                         <Calendar className="h-4 w-4" />
                         {format(parseISO(app.date), "dd/MM/yyyy", { locale: ptBR })}
                     </div>
