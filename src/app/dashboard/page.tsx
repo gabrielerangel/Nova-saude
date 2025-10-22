@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { CalendarPlus } from "lucide-react";
 import Link from "next/link";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
+import { HealthTipsCard } from "@/components/dashboard/health-tips-card";
+import { SpecialtyChart } from "@/components/dashboard/specialty-chart";
 
 export default function DashboardPage() {
   return (
@@ -31,8 +33,10 @@ export default function DashboardPage() {
         <div className="lg:col-span-3">
           <UpcomingAppointments />
         </div>
-        <div className="lg:col-span-2">
-          <Card>
+        <div className="lg:col-span-2 grid grid-cols-1 gap-8">
+           <SpecialtyChart />
+           <HealthTipsCard />
+           <Card>
             <CardHeader>
               <CardTitle>Calendário</CardTitle>
               <CardDescription>Dias com consultas agendadas estão destacados.</CardDescription>
