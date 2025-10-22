@@ -18,6 +18,7 @@ import {
   History,
   LogOut,
   CreditCard,
+  Settings,
 } from "lucide-react";
 
 const menuItems = [
@@ -32,9 +33,9 @@ export function AppSidebar() {
 
   return (
     <>
-      <SidebarHeader className="border-b">
-        <div className="flex h-14 items-center px-2">
-          <Logo />
+      <SidebarHeader className="border-b border-sidebar-border">
+        <div className="flex h-16 items-center px-4">
+          <Logo isDark />
         </div>
       </SidebarHeader>
       <SidebarContent className="p-2">
@@ -55,13 +56,19 @@ export function AppSidebar() {
           ))}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className="p-2">
+      <SidebarFooter className="p-2 border-t border-sidebar-border mt-auto">
         <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton tooltip="Configurações">
+              <Settings />
+              <span>Configurações</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="Sair" asChild>
               <Link href="/login">
-                  <LogOut />
-                  <span>Sair</span>
+                <LogOut />
+                <span>Sair</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>

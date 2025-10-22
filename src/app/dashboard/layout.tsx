@@ -22,10 +22,10 @@ export default function DashboardLayout({
       </Sidebar>
       <SidebarInset>
         <AppHeader />
-        <main className="p-4 md:p-6 flex-1 relative">{children}
+        <main className="p-4 md:p-8 flex-1 relative">{children}
         <Button
             asChild
-            className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg lg:hidden"
+            className="fixed bottom-6 right-6 h-16 w-16 rounded-full shadow-lg lg:hidden z-20"
           >
             <Link href="/dashboard/schedule">
               <CalendarPlus className="h-6 w-6" />
@@ -33,10 +33,10 @@ export default function DashboardLayout({
             </Link>
           </Button>
         </main>
-        <footer className="p-4 md:p-6 border-t">
-          <div className="flex items-center justify-center text-sm text-muted-foreground">
+        <footer className="p-4 md:p-6 border-t bg-card text-card-foreground">
+          <div className="container flex items-center justify-between text-sm text-muted-foreground">
             <span>© {new Date().getFullYear()} AgendaSaúde.</span>
-            <Link href="/accessibility" className="ml-4 underline">
+            <Link href="/accessibility" className="underline hover:text-primary">
               Acessibilidade
             </Link>
           </div>

@@ -1,7 +1,6 @@
 
 "use client";
 
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { useAppContext } from "@/contexts/app-context";
 import * as React from "react";
@@ -29,21 +28,16 @@ export function AppointmentsCalendar() {
   };
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Calendário</CardTitle>
-        <CardDescription>Dias com consultas estão destacados.</CardDescription>
-      </CardHeader>
-      <CardContent className="flex justify-center">
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          className="rounded-md"
-          modifiers={modifiers}
-          modifiersStyles={modifiersStyles}
-        />
-      </CardContent>
-    </Card>
+      <Calendar
+        mode="single"
+        selected={date}
+        onSelect={setDate}
+        className="rounded-md p-0"
+        classNames={{
+          cell: "h-9 w-9 text-center text-sm p-0 relative first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+        }}
+        modifiers={modifiers}
+        modifiersStyles={modifiersStyles}
+      />
   );
 }
