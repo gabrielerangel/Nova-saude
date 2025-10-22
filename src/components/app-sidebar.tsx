@@ -59,7 +59,7 @@ export function AppSidebar() {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="Sair" asChild>
-              <Link href="/">
+              <Link href="/login">
                   <LogOut />
                   <span>Sair</span>
               </Link>

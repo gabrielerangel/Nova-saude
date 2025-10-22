@@ -2,14 +2,6 @@
 import type { Metadata } from "next";
 import { AppContextProvider } from "@/contexts/app-context";
 import { Toaster } from "@/components/ui/toaster";
-import {
-  SidebarProvider,
-  Sidebar,
-  SidebarInset,
-} from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
-import { AppHeader } from "@/components/app-header";
-import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
