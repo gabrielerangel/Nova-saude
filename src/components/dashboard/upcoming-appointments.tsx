@@ -7,7 +7,7 @@ import { useAppContext } from "@/contexts/app-context";
 import { format, isFuture, parseISO } from "date-fns";
 import { ptBR } from 'date-fns/locale';
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Calendar, Clock, Stethoscope } from "lucide-react";
+import { Calendar, Clock, Stethoscope, Monitor, Building } from "lucide-react";
 
 export function UpcomingAppointments() {
   const { appointments, getPatientById, getDoctorById, patients } = useAppContext();
@@ -33,6 +33,8 @@ export function UpcomingAppointments() {
               const doctorAvatar = PlaceHolderImages.find(img => img.id.startsWith('doctor'));
               
               if (!patient || !doctor) return null;
+              
+              const TypeIcon = app.type === 'online' ? Monitor : Building;
 
               return (
                 <div key={app.id} className="flex items-center justify-between space-x-4 p-2 rounded-lg hover:bg-muted/50">
@@ -51,10 +53,11 @@ export function UpcomingAppointments() {
                   </div>
                   <div className="text-right">
                     <div className="flex items-center gap-2 text-sm font-medium">
+                        <TypeIcon className="h-4 w-4 text-muted-foreground" title={`Consulta ${app.type}`} />
                         <Calendar className="h-4 w-4" />
                         {format(parseISO(app.date), "dd/MM/yyyy", { locale: ptBR })}
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground justify-end">
                         <Clock className="h-4 w-4" />
                         {app.time}
                     </div>

@@ -92,7 +92,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
     setDoctors(prev => prev.filter(d => d.id !== doctorId));
   };
 
-  const addAppointment = (appointment: Omit<Appointment, 'id' | 'status' | 'price'>) => {
+  const addAppointment = (appointment: Omit<Appointment, 'id' | 'status' | 'price' | 'rating'>) => {
     const doctor = getDoctorById(appointment.doctorId);
     const specialtyPrices: { [key: string]: number } = {
         'Cardiologia': 250,
@@ -103,8 +103,10 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
         'Ginecologia': 240,
         'Psiquiatria': 180,
     }
-    const price = doctor ? specialtyPrices[doctor.specialty] || 150 : 150;
-    setAppointments(prev => [...prev, { ...appointment, id: crypto.randomUUID(), status: 'scheduled', price }]);
+    const basePrice = doctor ? specialtyPrices[doctor.specialty] || 150 : 150;
+    const price = appointment.type === 'online' ? basePrice * 0.8 : basePrice; // 20% discount for online appointments
+
+    setAppointments(prev => [...prev, { ...appointment, id: crypto.randomUUID(), status: 'scheduled', price: Math.round(price) }]);
   };
   const updateAppointment = (updatedAppointment: Appointment) => {
     setAppointments(prev => prev.map(a => a.id === updatedAppointment.id ? updatedAppointment : a));

@@ -22,7 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { MoreHorizontal, Calendar, Stethoscope, Search, Star } from "lucide-react";
+import { MoreHorizontal, Calendar, Stethoscope, Search, Star, Monitor, Building } from "lucide-react";
 import { useAppContext } from "@/contexts/app-context";
 import { Appointment } from "@/lib/types";
 import {
@@ -99,6 +99,21 @@ export function HistoryTable() {
             </div>
         </div>
       ),
+    },
+     {
+      accessorKey: "type",
+      header: "Tipo",
+      cell: ({ row }) => {
+        const { type } = row.original;
+        const Icon = type === 'online' ? Monitor : Building;
+        const label = type.charAt(0).toUpperCase() + type.slice(1);
+        return (
+          <div className="flex items-center gap-2">
+            <Icon className="h-4 w-4 text-muted-foreground" />
+            <span>{label}</span>
+          </div>
+        );
+      },
     },
     {
       accessorKey: "status",

@@ -25,4 +25,5 @@ export interface Appointment {
   status: 'scheduled' | 'completed' | 'canceled';
   price: number;
   rating?: number;
+  type: 'presencial' | 'online';
 }

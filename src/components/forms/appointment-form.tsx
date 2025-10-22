@@ -34,12 +34,14 @@ import { useAppContext } from "@/contexts/app-context";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 const formSchema = z.object({
   specialty: z.string({ required_error: "Selecione uma especialidade." }),
   doctorId: z.string({ required_error: "Selecione um médico." }),
   date: z.date({ required_error: "Selecione uma data." }),
   time: z.string({ required_error: "Selecione um horário." }),
+  type: z.enum(["presencial", "online"], { required_error: "Selecione o tipo de consulta."}),
 });
 
 const timeSlots = [
@@ -54,6 +56,9 @@ export function AppointmentForm() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      type: "presencial",
+    },
   });
 
   const watchDate = form.watch("date");
@@ -141,6 +146,40 @@ export function AppointmentForm() {
                   ))}
                 </SelectContent>
               </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+         <FormField
+          control={form.control}
+          name="type"
+          render={({ field }) => (
+            <FormItem className="space-y-3">
+              <FormLabel>Tipo de Consulta</FormLabel>
+              <FormControl>
+                <RadioGroup
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                  className="flex space-x-4"
+                >
+                  <FormItem className="flex items-center space-x-2 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="presencial" />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      Presencial
+                    </FormLabel>
+                  </FormItem>
+                  <FormItem className="flex items-center space-x-2 space-y-0">
+                    <FormControl>
+                      <RadioGroupItem value="online" />
+                    </FormControl>
+                    <FormLabel className="font-normal">
+                      Online
+                    </FormLabel>
+                  </FormItem>
+                </RadioGroup>
+              </FormControl>
               <FormMessage />
             </FormItem>
           )}
